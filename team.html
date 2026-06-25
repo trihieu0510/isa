@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Team — ISA CUHK</title>
+  <meta name="description" content="Meet the 17th Executive Committee (2026-27) of ISA CUHK — the students behind every event and initiative." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/isa-logo.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="subpage">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand" aria-label="ISA CUHK home">
+        <img src="assets/images/isa-logo.png" alt="ISA CUHK logo" class="brand-logo" />
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html" class="current">Our Team</a>
+        <a href="join.html" class="nav-cta">Become a Member</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <header class="page-head">
+    <div class="container">
+      <p class="eyebrow">The people behind ISA</p>
+      <h1 class="page-title">The 17th Cabinet</h1>
+      <p class="page-lead">Meet the Executive Committee for 2026-27 — the students running every event, social and initiative. Tap any photo for a closer look.</p>
+    </div>
+  </header>
+
+  <!-- GROUP FEATURE -->
+  <section class="section team-feature" style="padding-top:2.5rem">
+    <div class="container">
+      <figure class="team-group reveal-me">
+        <img src="assets/team/group.jpg" alt="ISA CUHK 17th Cabinet full committee group photo" loading="lazy" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ROSTER -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div id="teamRoster"></div>
+    </div>
+  </section>
+
+  <!-- PAST CABINETS -->
+  <section class="section section-alt" id="past-cabinets">
+    <div class="container">
+      <p class="eyebrow">Our history</p>
+      <h2 class="section-title">Past Cabinets</h2>
+      <p class="section-lead">The committees who built ISA before us. Tap a year to meet them.</p>
+      <div class="pc-tabs filter-bar" id="pcTabs" role="tablist" aria-label="Choose a past cabinet"></div>
+      <div id="pcContent"></div>
+    </div>
+  </section>
+
+  <!-- JOIN CTA -->
+  <section class="section">
+    <div class="container" style="text-align:center">
+      <h2 class="section-title" style="margin-bottom:.6rem">Want to be part of it?</h2>
+      <p class="section-lead" style="margin:0 auto 1.8rem">New committees are formed every year. Join ISA as a member and you could be on the next cabinet.</p>
+      <a href="join.html" class="btn btn-primary magnetic">Become a Member &rarr;</a>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">&#8250;</button>
+    <figure class="lb-figure">
+      <img id="lbImg" src="" alt="" />
+      <figcaption class="lb-caption">
+        <span class="lb-badge" id="lbCat"></span><span class="lb-date" id="lbDate"></span>
+        <p id="lbText"></p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/images/isa-logo.png" alt="ISA CUHK logo" class="footer-logo" />
+        <p>International Students Association<br />The Chinese University of Hong Kong</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#about">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Our Team</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/isa.cuhk/" target="_blank" rel="noopener">Instagram</a>
+        <a href="mailto:isa.cuhk@gmail.com">Email</a>
+      </div>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> ISA CUHK · International Students Association</p>
+  </footer>
+
+  <script src="js/team-data.js"></script>
+  <script src="js/past-cabinets-data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

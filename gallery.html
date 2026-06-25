@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — ISA CUHK</title>
+  <meta name="description" content="Every moment from ISA CUHK — events, our cabinet, campus life and community, straight from @isa.cuhk." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/isa-logo.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="subpage">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand" aria-label="ISA CUHK home">
+        <img src="assets/images/isa-logo.png" alt="ISA CUHK logo" class="brand-logo" />
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html" class="current">Gallery</a>
+        <a href="team.html">Our Team</a>
+        <a href="join.html" class="nav-cta">Become a Member</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <header class="page-head">
+    <div class="container">
+      <p class="eyebrow">Straight from @isa.cuhk</p>
+      <h1 class="page-title">The Full Gallery</h1>
+      <p class="page-lead">Every photo from our Instagram — events, our cabinet, campus life and everything in between. <span id="galleryCount" class="muted"></span></p>
+    </div>
+  </header>
+
+  <!-- GALLERY -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="filter-bar" id="filterBar" role="tablist" aria-label="Filter gallery"></div>
+      <div class="gallery-grid" id="galleryGrid" data-page="24" aria-live="polite"></div>
+      <div class="gallery-foot">
+        <button class="btn btn-outline magnetic" id="loadMore" type="button">Load more</button>
+        <a href="https://www.instagram.com/isa.cuhk/" target="_blank" rel="noopener" class="btn btn-primary magnetic">Follow @isa.cuhk</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">&#8250;</button>
+    <figure class="lb-figure">
+      <img id="lbImg" src="" alt="" />
+      <figcaption class="lb-caption">
+        <span class="lb-badge" id="lbCat"></span><span class="lb-date" id="lbDate"></span>
+        <p id="lbText"></p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/images/isa-logo.png" alt="ISA CUHK logo" class="footer-logo" />
+        <p>International Students Association<br />The Chinese University of Hong Kong</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#about">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="join.html">Join</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/isa.cuhk/" target="_blank" rel="noopener">Instagram</a>
+        <a href="mailto:isa.cuhk@gmail.com">Email</a>
+      </div>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> ISA CUHK · International Students Association</p>
+  </footer>
+
+  <script src="js/gallery-data.js"></script>
+  <script src="js/gallery-extra.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Local Claude Code config — not part of the site
+.claude/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store

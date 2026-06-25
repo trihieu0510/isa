@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Become a Member — ISA CUHK</title>
+  <meta name="description" content="Join the International Students Association at CUHK. Register as a member and become part of the ISA family." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/isa-logo.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="subpage">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand" aria-label="ISA CUHK home">
+        <img src="assets/images/isa-logo.png" alt="ISA CUHK logo" class="brand-logo" />
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Our Team</a>
+        <a href="join.html" class="nav-cta current">Become a Member</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <header class="page-head">
+    <div class="container">
+      <p class="eyebrow">Join the family</p>
+      <h1 class="page-title">Become a Member</h1>
+      <p class="page-lead">Sign up to be part of ISA — you'll hear first about every event and social, and get to be a part of our community at CUHK.</p>
+    </div>
+  </header>
+
+  <!-- WHY JOIN -->
+  <section class="section" style="padding-bottom:0">
+    <div class="container">
+      <div class="perks">
+        <div class="perk"><span class="perk-num">01</span><h3>Events &amp; socials</h3><p>Priority access and updates for boat parties, chalk nights, dai pai dong and more.</p></div>
+        <div class="perk"><span class="perk-num">02</span><h3>A ready-made community</h3><p>Meet students from across the world and never feel alone on campus.</p></div>
+        <div class="perk"><span class="perk-num">03</span><h3>Support &amp; mentorship</h3><p>From settling into Hong Kong to the iBuddy programme, we've got your back.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTRATION FORM -->
+  <section class="section join" id="register">
+    <div class="container">
+      <p class="eyebrow light">Step 1</p>
+      <h2 class="section-title light">Register</h2>
+      <p class="section-lead light">Fill in your details below and we'll be in touch about membership and upcoming events.</p>
+
+      <form class="join-form" id="joinForm" action="https://formspree.io/f/xrewpqjz" method="POST" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="fullName">Full Name <span>*</span></label>
+            <input type="text" id="fullName" name="name" required placeholder="Your full name" />
+          </div>
+          <div class="field">
+            <label for="email">CUHK Email <span>*</span></label>
+            <input type="email" id="email" name="email" required placeholder="1155xxxxxx@link.cuhk.edu.hk" />
+            <span class="field-hint">Must be your CUHK <strong>@link.cuhk.edu.hk</strong> address.</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="studentId">Student ID</label>
+            <input type="text" id="studentId" name="student_id" placeholder="e.g. 1155xxxxxx" />
+          </div>
+          <div class="field">
+            <label for="nationality">Nationality</label>
+            <select id="nationality" name="nationality">
+              <option value="">Select your nationality...</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="college">College</label>
+            <select id="college" name="college">
+              <option value="">Select your college...</option>
+              <option>Chung Chi College</option>
+              <option>New Asia College</option>
+              <option>United College</option>
+              <option>Shaw College</option>
+              <option>Morningside College</option>
+              <option>S.H. Ho College</option>
+              <option>C.W. Chu College</option>
+              <option>Wu Yee Sun College</option>
+              <option>Lee Woo Sing College</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="yearOfStudy">Year of Study</label>
+            <select id="yearOfStudy" name="year">
+              <option value="">Select...</option>
+              <option>Year 1</option>
+              <option>Year 2</option>
+              <option>Year 3</option>
+              <option>Year 4</option>
+              <option>Year 5</option>
+              <option>Postgraduate</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="major">Major</label>
+          <input type="text" id="major" name="major" placeholder="Full major name, e.g. Business Administration (no abbreviations)" />
+        </div>
+        <div class="field">
+          <label for="message">Why do you want to join? <span class="optional">(optional)</span></label>
+          <textarea id="message" name="message" rows="3" placeholder="Tell us a little about yourself!"></textarea>
+        </div>
+        <input type="hidden" name="_subject" value="New ISA CUHK membership registration" />
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Submit Registration</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- PAYMENT (coming soon) -->
+  <section class="section section-alt" id="payment">
+    <div class="container">
+      <p class="eyebrow">Step 2</p>
+      <h2 class="section-title">Membership Fee</h2>
+      <p class="section-lead">Membership includes a small fee that helps us run our events throughout the year.</p>
+
+      <div class="pay-card">
+        <div class="pay-info">
+          <span class="pay-badge">Coming soon</span>
+          <h3>Online payment is on the way</h3>
+          <p>We're setting up a secure way to pay your membership fee online. For now, just submit the registration form above — we'll follow up with payment details by email.</p>
+          <p class="pay-contact">Questions? Email us at <a href="mailto:isa.cuhk@gmail.com" class="link-accent">isa.cuhk@gmail.com</a></p>
+        </div>
+        <div class="pay-action">
+          <button class="btn btn-primary btn-block" type="button" disabled>Pay membership fee</button>
+          <p class="pay-note">Payment will be enabled here soon.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/images/isa-logo.png" alt="ISA CUHK logo" class="footer-logo" />
+        <p>International Students Association<br />The Chinese University of Hong Kong</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#about">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Our Team</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/isa.cuhk/" target="_blank" rel="noopener">Instagram</a>
+        <a href="mailto:isa.cuhk@gmail.com">Email</a>
+      </div>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> ISA CUHK · International Students Association</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
