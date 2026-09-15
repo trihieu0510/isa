@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ISA CUHK — International Students Association</title>
-  <meta name="description" content="The International Students Association (ISA) of The Chinese University of Hong Kong — building a global community on campus. Learn about us and become a member." />
+  <title>ISA CUHK | International Students Association</title>
+  <meta name="description" content="The International Students Association (ISA) of The Chinese University of Hong Kong, building a global community on campus. Learn about us and become a member." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="ISA CUHK — International Students Association" />
+  <meta property="og:title" content="ISA CUHK | International Students Association" />
   <meta property="og:description" content="Building a global community at CUHK. Join the International Students Association." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/images/hero-inauguration.jpg" />
@@ -15,15 +15,13 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <link rel="icon" type="image/png" href="assets/images/isa-logo.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <!-- scroll progress + cursor glow -->
   <div class="scroll-progress" id="scrollProgress"></div>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
   <!-- ===================== NAVBAR ===================== -->
   <header class="navbar" id="navbar">
@@ -34,7 +32,6 @@
 
       <nav class="nav-links" id="navLinks">
         <a href="#about">About</a>
-        <a href="#what-we-do">What We Do</a>
         <a href="events.html">Events</a>
         <a href="gallery.html">Gallery</a>
         <a href="team.html">Our Team</a>
@@ -51,22 +48,14 @@
   <section class="hero" id="home">
     <div class="hero-bg" style="background-image:url('assets/images/hero-inauguration.jpg')"></div>
     <div class="hero-overlay"></div>
-    <!-- animated gradient blobs -->
-    <div class="blobs" aria-hidden="true">
-      <span class="blob blob-1"></span>
-      <span class="blob blob-2"></span>
-      <span class="blob blob-3"></span>
-    </div>
     <div class="container hero-content">
       <p class="hero-eyebrow">The Chinese University of Hong Kong</p>
       <h1 class="hero-title">
         Your global<br />
-        <span class="rotator" id="rotator" aria-live="polite">
-          <span class="rotator-word">community</span>
-        </span><br />
+        <span class="rotator" id="rotator" aria-live="polite"><em class="rotator-word hero-accent">community</em></span><br />
         at CUHK
       </h1>
-      <p class="hero-sub">The International Students Association — a home away from home, connecting international and local students through culture, friendship, and unforgettable experiences.</p>
+      <p class="hero-sub">The International Students Association, a home away from home, connecting international and local students through culture, friendship, and unforgettable experiences.</p>
       <div class="hero-actions">
         <a href="join.html" class="btn btn-primary magnetic">Become a Member</a>
         <a href="#about" class="btn btn-ghost magnetic">Explore ISA</a>
@@ -75,29 +64,19 @@
     <a href="#about" class="hero-scroll" aria-label="Scroll down"><span></span></a>
   </section>
 
-  <!-- ===================== MARQUEE ===================== -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track" id="marqueeTrack">
-      <span>International</span><span class="dot">&bull;</span>
-      <span>Boat Party</span><span class="dot">&bull;</span>
-      <span>Dai Pai Dong</span><span class="dot">&bull;</span>
-      <span>Chalk Party</span><span class="dot">&bull;</span>
-      <span>iBuddy</span><span class="dot">&bull;</span>
-      <span>Speed Friendshipping</span><span class="dot">&bull;</span>
-      <span>Meet &amp; Greet</span><span class="dot">&bull;</span>
-      <span>Community</span><span class="dot">&bull;</span>
-    </div>
-  </div>
-
+  <!-- ===================== SCROLL DECK ===================== -->
+  <div class="deck" id="deck">
+    <div class="deck-track" id="deckTrack">
+      <div class="deck-stage" id="deckStage">
   <!-- ===================== ABOUT ===================== -->
-  <section class="section" id="about">
+  <section class="panel" data-panel id="about">
     <div class="container">
       <div class="about-grid">
         <div class="about-text">
           <p class="eyebrow">Who We Are</p>
-          <h2 class="section-title">More than an association —<br /><span class="grad-text">a family.</span></h2>
+          <h2 class="section-title">More than an association,<br /><em class="title-accent">a family.</em></h2>
           <p>The <strong>International Students Association (ISA)</strong> of The Chinese University of Hong Kong is a student-led organisation dedicated to supporting international students and celebrating the diverse cultures that make up our campus community.</p>
-          <p>From your first day in Hong Kong to graduation, ISA is here to help you settle in, make friends, and create a vibrant, inclusive student life — bridging international and local students alike.</p>
+          <p>From your first day in Hong Kong to graduation, ISA is here to help you settle in, make friends, and create a vibrant, inclusive student life, bridging international and local students alike.</p>
           <ul class="about-points">
             <li>A welcoming community for students from every corner of the world</li>
             <li>Events, socials, and support throughout your CUHK journey</li>
@@ -122,7 +101,7 @@
   </section>
 
   <!-- ===================== WHAT WE DO ===================== -->
-  <section class="section section-alt" id="what-we-do">
+  <section class="panel panel-alt" data-panel id="what-we-do">
     <div class="container">
       <p class="eyebrow">Our Mission</p>
       <h2 class="section-title">What We Do</h2>
@@ -131,7 +110,6 @@
           <div class="do-media"><img class="do-img" src="assets/images/events/chalk-party-1.jpg" alt="ISA social event" loading="lazy" /></div>
           <div class="do-overlay">
             <span class="do-num">01</span>
-            <span class="do-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg></span>
             <h3>Social Events</h3>
             <p>Welcome parties, festivals, trips and cultural nights that turn classmates into lifelong friends.</p>
           </div>
@@ -140,16 +118,14 @@
           <div class="do-media"><img class="do-img" src="assets/images/gallery-candid-1.jpg" alt="ISA student support" loading="lazy" /></div>
           <div class="do-overlay">
             <span class="do-num">02</span>
-            <span class="do-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="15.5 8.5 10.5 10.5 8.5 15.5 13.5 13.5"/></svg></span>
             <h3>Student Support</h3>
-            <p>Guidance for settling into Hong Kong and CUHK — from campus life to everyday essentials.</p>
+            <p>Guidance for settling into Hong Kong and CUHK, from campus life to everyday essentials.</p>
           </div>
         </article>
         <article class="do-card tilt">
           <div class="do-media"><img class="do-img" src="assets/events/dai-pai-dong/dai-pai-dong-01.jpg" alt="ISA cultural exchange" loading="lazy" /></div>
           <div class="do-overlay">
             <span class="do-num">03</span>
-            <span class="do-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg></span>
             <h3>Cultural Exchange</h3>
             <p>Celebrating diversity by sharing traditions, food and stories from around the globe.</p>
           </div>
@@ -158,7 +134,6 @@
           <div class="do-media"><img class="do-img" src="assets/events/prepasia/prepasia-02.jpg" alt="ISA growth and networking" loading="lazy" /></div>
           <div class="do-overlay">
             <span class="do-num">04</span>
-            <span class="do-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
             <h3>Growth &amp; Networking</h3>
             <p>Workshops and opportunities to build skills, leadership and a global network of peers.</p>
           </div>
@@ -168,17 +143,17 @@
   </section>
 
   <!-- ===================== EVENTS ===================== -->
-  <section class="section" id="events">
+  <section class="panel" data-panel id="events">
     <div class="container">
       <p class="eyebrow">Highlights</p>
       <h2 class="section-title">Our Events</h2>
-      <p class="section-lead">From boat parties to local food nights — here's a taste of what a year with ISA looks like. <span class="muted">Hover to peek, tap to explore.</span></p>
+      <p class="section-lead">From boat parties to local food nights, here's a taste of what a year with ISA looks like. <span class="muted">Hover to peek, tap to explore.</span></p>
       <div class="event-tiles">
         <a href="events.html" class="event-tile feat">
           <img src="assets/events/boat-party/boat-party-05.jpg" alt="ISA Boat Party around Hong Kong's islands" loading="lazy" />
           <div class="tile-overlay">
             <h3>Boat Party</h3>
-            <p>A day out on the water — swimming, sun and the Hong Kong skyline with the whole ISA family.</p>
+            <p>A day out on the water: swimming, sun and the Hong Kong skyline with the whole ISA family.</p>
             <span class="tile-go">View event &rarr;</span>
           </div>
         </a>
@@ -186,7 +161,7 @@
           <img src="assets/images/events/chalk-party-1.jpg" alt="ISA Chalk Party UV neon night" loading="lazy" />
           <div class="tile-overlay">
             <h3>Chalk Party</h3>
-            <p>Our legendary UV night — neon paint, music and white tees that never stay white.</p>
+            <p>Our legendary UV night: neon paint, music and white tees that never stay white.</p>
             <span class="tile-go">View event &rarr;</span>
           </div>
         </a>
@@ -194,7 +169,7 @@
           <img src="assets/events/dai-pai-dong/dai-pai-dong-01.jpg" alt="ISA Dai Pai Dong local food night" loading="lazy" />
           <div class="tile-overlay">
             <h3>Dai Pai Dong</h3>
-            <p>Authentic local Hong Kong street food, the way it's meant to be enjoyed — together.</p>
+            <p>Authentic local Hong Kong street food, the way it's meant to be enjoyed, together.</p>
             <span class="tile-go">View event &rarr;</span>
           </div>
         </a>
@@ -218,7 +193,7 @@
           <img src="assets/events/halloween-ball/halloween-ball-01.jpg" alt="ISA Halloween Ball" loading="lazy" />
           <div class="tile-overlay">
             <h3>Halloween Ball</h3>
-            <p>Costumes, UV lights and a dance floor that doesn't quit — our spookiest night.</p>
+            <p>Costumes, UV lights and a dance floor that doesn't quit. Our spookiest night.</p>
             <span class="tile-go">View event &rarr;</span>
           </div>
         </a>
@@ -238,11 +213,11 @@
   </section>
 
   <!-- ===================== TEAM ===================== -->
-  <section class="section section-alt" id="team">
+  <section class="panel panel-alt" data-panel id="team">
     <div class="container">
       <p class="eyebrow">The People</p>
       <h2 class="section-title">Meet the 17th Cabinet</h2>
-      <p class="section-lead">A team of students from across the world, running ISA for 2026-27 — President &amp; VP, Secretaries, Treasurers, PR, Design, Events and IT.</p>
+      <p class="section-lead">A team of students from across the world, running ISA for 2026-27: President &amp; VP, Secretaries, Treasurers, PR, Design, Events and IT.</p>
       <div class="team-home">
         <figure class="team-home-photo"><img src="assets/team/group.jpg" alt="ISA CUHK 17th Cabinet group photo" loading="lazy" /></figure>
         <div class="team-home-side">
@@ -250,7 +225,7 @@
             <span>President</span><span>Vice President</span><span>Secretaries</span><span>Treasurers</span>
             <span>Public Relations</span><span>Design</span><span>Events</span><span>IT</span>
           </div>
-          <p>Fifteen students, eight departments, one mission — making CUHK feel like home for every international student.</p>
+          <p>Fifteen students, eight departments, one mission: making CUHK feel like home for every international student.</p>
           <a href="team.html" class="btn btn-primary magnetic">Meet the full cabinet &rarr;</a>
         </div>
       </div>
@@ -258,11 +233,11 @@
   </section>
 
   <!-- ===================== GALLERY PREVIEW ===================== -->
-  <section class="section section-alt" id="gallery">
+  <section class="panel panel-alt" data-panel id="gallery">
     <div class="container">
       <p class="eyebrow">Straight from @isa.cuhk</p>
       <h2 class="section-title">Moments from ISA</h2>
-      <p class="section-lead">A glimpse of life with us — events, our cabinet and campus life. We've got <strong>hundreds</strong> more in the full gallery.</p>
+      <p class="section-lead">A glimpse of life with us: events, our cabinet and campus life. We've got <strong>hundreds</strong> more in the full gallery.</p>
     </div>
     <div class="gallery-preview" id="galleryPreview" aria-hidden="true"></div>
     <div class="container">
@@ -274,17 +249,34 @@
   </section>
 
   <!-- ===================== JOIN CTA ===================== -->
-  <section class="section join join-cta" id="join">
-    <div class="container">
-      <p class="eyebrow light">Join Us</p>
-      <h2 class="section-title light">Become part of the ISA family</h2>
-      <p class="section-lead light">Sign up as a member to get first word on every event and social — and to make CUHK feel a little more like home.</p>
-      <div class="hero-actions">
-        <a href="join.html" class="btn btn-primary magnetic">Become a Member &rarr;</a>
-        <a href="events.html" class="btn btn-ghost magnetic">See what we do</a>
+  <section class="panel panel-join" data-panel id="join">
+    <div class="container cta-grid">
+      <div class="cta-copy">
+        <p class="eyebrow light">Join Us</p>
+        <h2 class="section-title light">Become part of the <em class="title-accent light">ISA family</em></h2>
+        <p class="section-lead light">Sign up as a member to get first word on every event and social, and to make CUHK feel a little more like home.</p>
+        <ul class="cta-points">
+          <li>Priority access to every event and social</li>
+          <li>A ready-made community from day one</li>
+          <li>Support settling into Hong Kong and CUHK</li>
+        </ul>
+        <div class="hero-actions">
+          <a href="join.html" class="btn btn-primary magnetic">Become a Member &rarr;</a>
+          <a href="events.html" class="btn btn-ghost magnetic">See what we do</a>
+        </div>
+      </div>
+      <div class="cta-photos" aria-hidden="true">
+        <figure class="cta-ph cta-ph-1"><img src="assets/events/dai-pai-dong/dai-pai-dong-04.jpg" alt="" loading="lazy" /></figure>
+        <figure class="cta-ph cta-ph-2"><img src="assets/events/halloween-ball/halloween-ball-02.jpg" alt="" loading="lazy" /></figure>
+        <figure class="cta-ph cta-ph-3"><img src="assets/events/inauguration/inauguration-02.jpg" alt="" loading="lazy" /></figure>
       </div>
     </div>
   </section>
+
+      </div>
+    </div>
+    <div class="deck-dots" id="deckDots" aria-hidden="true"></div>
+  </div>
 
   <!-- ===================== FOOTER ===================== -->
   <footer class="footer">

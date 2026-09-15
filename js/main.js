@@ -1,5 +1,5 @@
 /* ============================================================
-   ISA CUHK — main.js  (shared across all pages, page-aware)
+   ISA CUHK main.js  (shared across all pages, page-aware)
    ============================================================ */
 (function () {
   'use strict';
@@ -11,9 +11,15 @@
   /* ---------------- Navbar ---------------- */
   const navbar = $('#navbar');
   if (navbar) {
-    const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 30);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Only pages with a dark hero start transparent. Inner pages ship with
+    // .scrolled already set and must keep it, or their white links land on a
+    // light page head and vanish.
+    const hasHero = !!$('.hero');
+    if (hasHero) {
+      const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 30);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
   }
   const toggle = $('#navToggle'), links = $('#navLinks');
   if (toggle && links) {
@@ -78,30 +84,53 @@
   /* ---------------- Word rotator ---------------- */
   const rot = $('#rotator');
   if (rot && !reduce) {
-    const words = ['community', 'family', 'home', 'adventure', 'story'];
+    const words = ['community', 'family', 'home'];
     let i = 0;
-    setInterval(() => { i = (i + 1) % words.length; rot.innerHTML = '<span class="rotator-word">' + words[i] + '</span>'; }, 2200);
+    setInterval(() => { i = (i + 1) % words.length; rot.innerHTML = '<em class="rotator-word hero-accent">' + words[i] + '</em>'; }, 2200);
   }
 
   /* ---------------- Marquee duplicate ---------------- */
   const track = $('#marqueeTrack');
   if (track) track.innerHTML += track.innerHTML;
 
-  /* ---------------- Reveal on scroll ---------------- */
-  const revealTargets = $$('.section-title, .section-lead, .about-text, .about-stats, .card, .do-card, .event-card, .event-tile, .team-photo, .join-form, .reveal-me');
-  revealTargets.forEach((el) => el.classList.add('reveal'));
+  /* ---------------- Reveal on scroll ----------------
+     scanReveals() is re-callable: sections rendered later from data
+     (team, past cabinets, gallery) register themselves by calling it. */
+  const REVEAL_SEL = '.section-title, .section-lead, .about-text, .about-stats, .card, .do-card, ' +
+    '.event-card, .event-tile, .team-photo, .team-dept, .team-dept-photo, .team-member, ' +
+    '.pc-cabinet, .pc-group, .gform-wrap, .pay-card, .join-form, .reveal-me';
   let revealIO = null;
   if ('IntersectionObserver' in window) {
     revealIO = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
-          entry.target.style.transitionDelay = (i % 4) * 60 + 'ms';
-          entry.target.classList.add('in'); revealIO.unobserve(entry.target);
+          entry.target.style.transitionDelay = Math.min(i, 5) * 70 + 'ms';
+          entry.target.classList.add('in');
+          revealIO.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
-    revealTargets.forEach((el) => revealIO.observe(el));
-  } else { revealTargets.forEach((el) => el.classList.add('in')); }
+    }, { threshold: 0.02, rootMargin: '0px 0px 15% 0px' });
+  }
+  const scanReveals = (root) => {
+    const els = $$(REVEAL_SEL, root || document);
+    els.forEach((el) => {
+      if (el.dataset.revealed) return;
+      el.dataset.revealed = '1';
+      el.classList.add('reveal');
+      if (revealIO) revealIO.observe(el); else el.classList.add('in');
+    });
+  };
+  window.ISA_scanReveals = scanReveals;
+  scanReveals();
+  // Nothing should ever stay invisible because an observer did not fire.
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      $$('.reveal:not(.in)').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 1.5) el.classList.add('in');
+      });
+    }, 400);
+  });
 
   /* ---------------- Count-up ---------------- */
   const counters = $$('.stat-num[data-count]');
@@ -303,26 +332,53 @@
     const lbItems = [];
     const pad = (n) => (n < 10 ? '0' + n : '' + n);
     T.departments.forEach((d, di) => {
-      const block = document.createElement('div');
-      block.className = 'team-dept reveal-me';
+      // On the team page each department is its own deck panel.
+      const inDeck = !!$('#deckStage');
+      const block = document.createElement(inDeck ? 'section' : 'div');
+      if (inDeck) {
+        block.className = 'panel' + (di % 2 ? ' panel-alt' : '');
+        block.setAttribute('data-panel', '');
+      } else {
+        block.className = 'team-dept';
+      }
       let html = '<div class="team-dept-head"><span class="team-dept-num">' + pad(di + 1) + '</span><h3>' + esc(d.name) + '</h3></div>';
+      // A one-person department (President, Vice President) uses the same
+      // graphic for the department and the member, and that graphic already
+      // carries their name and role. Show it once rather than twice.
+      const solo = d.members.length === 1 && !!d.photo;
+
       if (d.photo) {
         const li = lbItems.length;
-        lbItems.push({ src: d.photo, title: d.name + ' Team', caption: d.name + ' — ISA 17th Cabinet', date: '2026-27', cat: 'Our Team' });
-        html += '<figure class="team-dept-photo" data-lb="' + li + '" tabindex="0"><img src="' + d.photo + '" alt="ISA ' + esc(d.name) + ' team" loading="lazy" /></figure>';
+        const m0 = d.members[0];
+        lbItems.push(solo
+          ? { src: d.photo, title: m0.name, caption: m0.name + ', ' + m0.role, date: '2026-27', cat: 'Our Team' }
+          : { src: d.photo, title: d.name + ' Team', caption: d.name + ', ISA 17th Cabinet', date: '2026-27', cat: 'Our Team' });
+        const alt = solo
+          ? esc(m0.name) + ', ' + esc(m0.role)
+          : 'ISA ' + esc(d.name) + ' team';
+        html += '<figure class="team-dept-photo' + (solo ? ' is-solo' : '') + '" data-lb="' + li + '" tabindex="0">' +
+          '<img src="' + d.photo + '" alt="' + alt + '" loading="lazy" /></figure>';
       }
-      html += '<div class="team-members">';
-      d.members.forEach((m) => {
-        const li = lbItems.length;
-        lbItems.push({ src: m.img, title: m.name, caption: m.name + ' — ' + m.role, date: '2026-27', cat: 'Our Team' });
-        html += '<figure class="team-member" data-lb="' + li + '" tabindex="0">' +
-          '<div class="tm-img"><img src="' + m.img + '" alt="' + esc(m.name) + ', ' + esc(m.role) + '" loading="lazy" /></div>' +
-          '<figcaption><strong>' + esc(m.name) + '</strong><span>' + esc(m.role) + '</span></figcaption></figure>';
-      });
-      html += '</div>';
-      block.innerHTML = html;
+
+      if (!solo) {
+        html += '<div class="team-members">';
+        d.members.forEach((m) => {
+          const li = lbItems.length;
+          lbItems.push({ src: m.img, title: m.name, caption: m.name + ', ' + m.role, date: '2026-27', cat: 'Our Team' });
+          html += '<figure class="team-member" data-lb="' + li + '" tabindex="0">' +
+            '<div class="tm-img"><img src="' + m.img + '" alt="' + esc(m.name) + ', ' + esc(m.role) + '" loading="lazy" /></div>' +
+            '<figcaption><strong>' + esc(m.name) + '</strong><span>' + esc(m.role) + '</span></figcaption></figure>';
+        });
+        html += '</div>';
+      }
+      block.innerHTML = inDeck
+        ? '<div class="container"><div class="team-dept">' + html + '</div></div>'
+        : html;
       roster.appendChild(block);
-      if (revealIO) { block.classList.add('reveal'); revealIO.observe(block); } else block.classList.add('in');
+      if (!inDeck) {
+        scanReveals(block);
+        if (revealIO) { block.classList.add('reveal'); revealIO.observe(block); } else block.classList.add('in');
+      }
     });
     // wire lightbox
     $$('[data-lb]', roster).forEach((el) => {
@@ -336,41 +392,76 @@
      Past Cabinets (tabs)
      ============================================================ */
   const pcTabs = $('#pcTabs'), pcContent = $('#pcContent');
-  if (pcTabs && pcContent && Array.isArray(window.ISA_PAST_CABINETS) && window.ISA_PAST_CABINETS.length) {
+  if (pcContent && Array.isArray(window.ISA_PAST_CABINETS) && window.ISA_PAST_CABINETS.length) {
     const cabs = window.ISA_PAST_CABINETS;
-    function renderCab(cab) {
-      const items = [];
-      let html = '';
-      if (cab.group) {
-        items.push({ src: cab.group, title: cab.title, caption: cab.title + ' · ' + cab.years, date: '', cat: 'Past Cabinet' });
-        html += '<figure class="pc-group" data-lb="0" tabindex="0"><img src="' + cab.group + '" alt="' + esc(cab.title) + ' group photo" loading="lazy" /></figure>';
+    const inDeck = !!$('#deckStage');
+    const items = [];
+    let panelIndex = 0;
+
+    if (pcTabs) pcTabs.remove();   // year tabs replaced by scrolling
+
+    // Cards are shown at the same size as the current cabinet, so a year is
+    // split across as many panels as it needs rather than being shrunk.
+    const PER_PANEL = 12;
+
+    const card = (c, cab) => {
+      const li = items.length;
+      items.push({ src: c.src, title: c.name, caption: c.name + ' · ' + cab.title, date: cab.years, cat: 'Past Cabinet' });
+      return '<figure class="team-member" data-lb="' + li + '" tabindex="0">' +
+        '<div class="tm-img"><img src="' + c.src + '" alt="' + esc(c.name) + ', ' + esc(cab.title) + '" loading="lazy" /></div>' +
+        '<figcaption><strong>' + esc(c.name) + '</strong><span>' + esc(cab.years) + '</span></figcaption></figure>';
+    };
+
+    const head = (cab, part, parts) => {
+      let h = '<div class="team-dept-head"><span class="team-dept-num">' + esc(cab.years) + '</span><h3>' + esc(cab.title);
+      if (parts > 1) h += ' <span class="pc-part">' + part + '/' + parts + '</span>';
+      return h + '</h3></div>';
+    };
+
+    const addPanel = (innerHtml) => {
+      const el = document.createElement(inDeck ? 'section' : 'div');
+      if (inDeck) {
+        el.className = 'panel' + (panelIndex % 2 ? '' : ' panel-alt');
+        el.setAttribute('data-panel', '');
+        el.innerHTML = '<div class="container"><div class="team-dept pc-cabinet">' + innerHtml + '</div></div>';
+      } else {
+        el.className = 'team-dept pc-cabinet';
+        el.innerHTML = innerHtml;
       }
-      html += '<div class="pc-grid">';
-      cab.cards.forEach((c) => {
-        const li = items.length;
-        items.push({ src: c.src, title: c.name, caption: c.name + ' · ' + cab.title, date: '', cat: 'Past Cabinet' });
-        html += '<figure class="pc-card" data-lb="' + li + '" tabindex="0"><img src="' + c.src + '" alt="' + esc(c.name) + '" loading="lazy" /></figure>';
+      pcContent.appendChild(el);
+      panelIndex++;
+      if (!inDeck) scanReveals(el);
+    };
+
+    cabs.forEach((cab) => {
+      const chunks = [];
+      for (let k = 0; k < cab.cards.length; k += PER_PANEL) chunks.push(cab.cards.slice(k, k + PER_PANEL));
+      const parts = chunks.length + (cab.group ? 1 : 0);
+      let part = 0;
+
+      if (cab.group) {
+        part++;
+        const gi = items.length;
+        items.push({ src: cab.group, title: cab.title, caption: cab.title + ' · ' + cab.years, date: '', cat: 'Past Cabinet' });
+        addPanel(head(cab, part, parts) +
+          '<figure class="team-dept-photo is-solo" data-lb="' + gi + '" tabindex="0">' +
+          '<img src="' + cab.group + '" alt="' + esc(cab.title) + ' group photo" loading="lazy" /></figure>');
+      }
+
+      chunks.forEach((chunk) => {
+        part++;
+        addPanel(head(cab, part, parts) +
+          '<div class="team-members">' + chunk.map((c) => card(c, cab)).join('') + '</div>');
       });
-      html += '</div>';
-      pcContent.innerHTML = html;
-      $$('[data-lb]', pcContent).forEach((el) => {
-        const open = () => Lightbox && Lightbox.open(items, parseInt(el.dataset.lb, 10));
-        el.addEventListener('click', open);
-        el.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
-      });
-    }
-    cabs.forEach((cab, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'filter-btn' + (i === 0 ? ' active' : '');
-      btn.type = 'button';
-      btn.innerHTML = cab.title + '<span class="n">' + cab.years + '</span>';
-      btn.addEventListener('click', () => {
-        pcTabs.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active'); renderCab(cab);
-      });
-      pcTabs.appendChild(btn);
     });
-    renderCab(cabs[0]);
+
+    $$('[data-lb]', pcContent).forEach((el) => {
+      const open = () => Lightbox && Lightbox.open(items, parseInt(el.dataset.lb, 10));
+      el.addEventListener('click', open);
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
+    });
+
+    if (window.ISA_refreshDeck) window.ISA_refreshDeck();
   }
 
   /* ============================================================
@@ -379,13 +470,29 @@
   const strip = $('#galleryPreview');
   const previewData = [].concat(window.ISA_GALLERY_EXTRA || [], window.ISA_GALLERY || []);
   if (strip && previewData.length) {
-    const picks = previewData.slice(0, 10);
-    picks.forEach((d) => {
+    const picks = previewData.slice(0, 14);
+
+    const track = document.createElement('div');
+    track.className = 'gp-track';
+
+    const makeItem = (d, clone) => {
       const a = document.createElement('a');
-      a.className = 'gp-item'; a.href = 'gallery.html';
-      a.innerHTML = '<img src="' + d.src + '" alt="' + esc(d.title) + '" loading="lazy" />';
-      strip.appendChild(a);
-    });
+      a.className = 'gp-item';
+      a.href = 'gallery.html';
+      if (clone) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
+      a.innerHTML = '<img src="' + d.src + '" alt="' + (clone ? '' : esc(d.title)) + '" loading="lazy" />';
+      return a;
+    };
+
+    picks.forEach((d) => track.appendChild(makeItem(d, false)));
+    // A second pass of the same images lets the track loop with no seam:
+    // the animation travels exactly one set width, then snaps back invisibly.
+    picks.forEach((d) => track.appendChild(makeItem(d, true)));
+
+    strip.appendChild(track);
+
+    // Longer strips should not spin faster, so scale duration by item count.
+    track.style.animationDuration = (picks.length * 4.5) + 's';
   }
 
   /* ============================================================
@@ -423,7 +530,7 @@
         }
         return;
       }
-      if (form.action.includes('YOUR_FORM_ID')) { setStatus('Form endpoint not configured yet — add your Formspree ID in the HTML.', 'error'); return; }
+      if (form.action.includes('YOUR_FORM_ID')) { setStatus('Form endpoint not configured yet. Add your Formspree ID in the HTML.', 'error'); return; }
       submitBtn.disabled = true; submitBtn.textContent = 'Submitting…'; setStatus('', '');
       try {
         const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
@@ -433,13 +540,196 @@
         } else {
           const data = await res.json().catch(() => ({}));
           const msg = data.errors ? data.errors.map((x) => x.message).join(', ') : 'Something went wrong.';
-          setStatus('Sorry — ' + msg + ' Please try again.', 'error');
+          setStatus('Sorry, ' + msg + ' Please try again.', 'error');
           submitBtn.disabled = false; submitBtn.textContent = 'Submit Registration';
         }
       } catch (err) {
-        setStatus('Network error — please check your connection and try again.', 'error');
+        setStatus('Network error. Please check your connection and try again.', 'error');
         submitBtn.disabled = false; submitBtn.textContent = 'Submit Registration';
       }
     });
   }
+
+  /* ============================================================
+     Scroll engine
+
+     The deck pins one stage to the viewport and cross-fades panels
+     as scroll advances, so the reader stays put while the content
+     moves through. Falls back to normal document flow on small or
+     short screens and for reduced-motion users.
+     ============================================================ */
+  (function scrollEngine() {
+    const hero = $('.hero');
+    const heroBg = $('.hero-bg');
+    const heroContent = $('.hero-content');
+    const heroScroll = $('.hero-scroll');
+
+    const deck = $('#deck');
+    const track = $('#deckTrack');
+    const stage = $('#deckStage');
+    const dotsWrap = $('#deckDots');
+    let panels = deck ? $$('[data-panel]', deck) : [];
+
+    if (!hero && !deck) return;
+
+    const DWELL = 0.95;           // viewport heights of scroll per panel
+    const HOLD = 0.2;             // |distance| held at full opacity
+    const FADE = 0.45;            // distance over which a panel fades out
+    const SHIFT = 46;             // px a panel travels while passing
+
+    const deckOn = () =>
+      !reduce && !!deck && panels.length > 1 &&
+      window.innerWidth > 900 && window.innerHeight >= 560;
+
+    let dots = [];
+    const buildDots = () => {
+      if (!dotsWrap) return;
+      if (dotsWrap.childElementCount === panels.length) { dots = $$('.deck-dot', dotsWrap); return; }
+      dotsWrap.innerHTML = '';
+      panels.forEach(() => {
+        const d = document.createElement('span');
+        d.className = 'deck-dot';
+        dotsWrap.appendChild(d);
+      });
+      dots = $$('.deck-dot', dotsWrap);
+    };
+
+    let c = null;
+    const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
+
+    const measure = () => {
+      c = { vh: window.innerHeight, vw: window.innerWidth };
+      if (hero) c.heroH = hero.offsetHeight || c.vh;
+
+      // Panels can be rendered from data after load, so re-query each pass.
+      panels = deck ? $$('[data-panel]', deck) : [];
+      buildDots();
+
+      const on = deckOn();
+      if (deck) deck.classList.toggle('deck-off', !on);
+
+      if (deck && track && on) {
+        // One viewport to arrive, DWELL per remaining panel to run through.
+        track.style.height = (c.vh * (1 + DWELL * (panels.length - 1)) + c.vh * 0.35) + 'px';
+        c.deckTop = deck.getBoundingClientRect().top + window.scrollY;
+        c.deckRange = Math.max(1, track.offsetHeight - c.vh);
+        c.on = true;
+
+        // Shrink any panel whose content is taller than the stage, so
+        // nothing is ever clipped by the stage overflow.
+        const avail = c.vh - 140;
+        panels.forEach((el) => {
+          const box = el.firstElementChild;
+          if (!box) return;
+          box.style.setProperty('--fit', '1');
+          const h = box.scrollHeight;
+          const fit = h > avail ? Math.max(0.55, avail / h) : 1;
+          box.style.setProperty('--fit', fit.toFixed(3));
+        });
+      } else if (track) {
+        track.style.height = '';
+        panels.forEach((el) => {
+          el.style.opacity = '';
+          el.style.transform = '';
+          el.classList.remove('on');
+        });
+        if (dotsWrap) dotsWrap.classList.remove('show');
+        c.on = false;
+      }
+    };
+
+    let lastActive = -1;
+
+    const frame = () => {
+      if (!c) return;
+      const y = window.scrollY;
+
+      /* Hero parallax */
+      if (hero) {
+        const p = clamp01(y / c.heroH);
+        if (heroBg) heroBg.style.setProperty('--p', p.toFixed(4));
+        if (heroContent) heroContent.style.setProperty('--p', p.toFixed(4));
+        if (heroScroll) heroScroll.style.setProperty('--p', p.toFixed(4));
+      }
+
+      /* Deck */
+      if (c.on && deck) {
+        const prog = clamp01((y - c.deckTop) / c.deckRange);
+        const pos = prog * (panels.length - 1);
+        const inDeck = y > c.deckTop - c.vh * 0.5 && y < c.deckTop + c.deckRange + c.vh * 0.5;
+
+        let active = Math.round(pos);
+        if (active < 0) active = 0;
+        if (active > panels.length - 1) active = panels.length - 1;
+
+        for (let k = 0; k < panels.length; k++) {
+          const el = panels[k];
+          const d = pos - k;
+          const ad = Math.abs(d);
+          // Hold at full strength near the centre, then fade.
+          const a = 1 - clamp01((ad - HOLD) / FADE);
+          el.style.opacity = a.toFixed(3);
+          el.style.transform = 'translate3d(0,' + (-d * SHIFT).toFixed(1) + 'px,0)';
+          el.style.visibility = a <= 0.002 ? 'hidden' : 'visible';
+          el.classList.toggle('on', k === active);
+        }
+
+        if (active !== lastActive) {
+          for (let k = 0; k < dots.length; k++) dots[k].classList.toggle('on', k === active);
+          if (dotsWrap) {
+            dotsWrap.classList.toggle('on-dark', panels[active].classList.contains('panel-join'));
+          }
+          lastActive = active;
+        }
+        if (dotsWrap) dotsWrap.classList.toggle('show', inDeck);
+      }
+    };
+
+    /* Anchor links must target a scroll position, not an absolute panel */
+    const scrollToPanel = (idx) => {
+      if (!c || !c.on) return false;
+      const target = c.deckTop + (idx / (panels.length - 1)) * c.deckRange;
+      window.scrollTo({ top: Math.round(target), behavior: reduce ? 'auto' : 'smooth' });
+      return true;
+    };
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a) return;
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      const idx = panels.findIndex((el) => el.id === id);
+      if (idx === -1 || !c || !c.on) return;
+      e.preventDefault();
+      scrollToPanel(idx);
+    });
+
+    /* Land on the right panel when arriving with a hash */
+    const settleHash = () => {
+      if (!location.hash || !c || !c.on) return;
+      const idx = panels.findIndex((el) => el.id === location.hash.slice(1));
+      if (idx > -1) scrollToPanel(idx);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { frame(); ticking = false; });
+    };
+
+    let rt = null;
+    const onResize = () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => { lastActive = -1; measure(); frame(); }, 140);
+    };
+
+    window.ISA_refreshDeck = () => { lastActive = -1; measure(); frame(); };
+
+    measure(); frame();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    window.addEventListener('load', () => { measure(); frame(); settleHash(); });
+  })();
+
 })();

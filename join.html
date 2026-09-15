@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Become a Member — ISA CUHK</title>
+  <title>Become a Member | ISA CUHK</title>
   <meta name="description" content="Join the International Students Association at CUHK. Register as a member and become part of the ISA family." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/isa-logo.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="subpage">
   <div class="scroll-progress" id="scrollProgress"></div>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
   <!-- NAV -->
   <header class="navbar scrolled" id="navbar">
@@ -38,12 +37,12 @@
     <div class="container">
       <p class="eyebrow">Join the family</p>
       <h1 class="page-title">Become a Member</h1>
-      <p class="page-lead">Sign up to be part of ISA — you'll hear first about every event and social, and get to be a part of our community at CUHK.</p>
+      <p class="page-lead">Sign up to be part of ISA. You'll hear first about every event and social, and get to be a part of our community at CUHK.</p>
     </div>
   </header>
 
   <!-- WHY JOIN -->
-  <section class="section" style="padding-bottom:0">
+  <section class="section">
     <div class="container">
       <div class="perks">
         <div class="perk"><span class="perk-num">01</span><h3>Events &amp; socials</h3><p>Priority access and updates for boat parties, chalk nights, dai pai dong and more.</p></div>
@@ -56,95 +55,23 @@
   <!-- REGISTRATION FORM -->
   <section class="section join" id="register">
     <div class="container">
-      <p class="eyebrow light">Step 1</p>
+      <p class="eyebrow light">Membership</p>
       <h2 class="section-title light">Register</h2>
       <p class="section-lead light">Fill in your details below and we'll be in touch about membership and upcoming events.</p>
 
-      <form class="join-form" id="joinForm" action="https://formspree.io/f/xrewpqjz" method="POST" novalidate>
-        <div class="form-row">
-          <div class="field">
-            <label for="fullName">Full Name <span>*</span></label>
-            <input type="text" id="fullName" name="name" required placeholder="Your full name" />
-          </div>
-          <div class="field">
-            <label for="email">CUHK Email <span>*</span></label>
-            <input type="email" id="email" name="email" required placeholder="1155xxxxxx@link.cuhk.edu.hk" />
-            <span class="field-hint">Must be your CUHK <strong>@link.cuhk.edu.hk</strong> address.</span>
-          </div>
+      <div class="reg-card">
+        <div class="reg-body">
+          <h3>Membership registration</h3>
+          <p>Registration is handled through our Google Form. It takes about two minutes, and we'll follow up by email about membership and upcoming events.</p>
+          <ul class="reg-list">
+            <li>Name, student ID and year of study</li>
+            <li>Programme and nationality</li>
+            <li>Contact email and phone</li>
+          </ul>
         </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="studentId">Student ID</label>
-            <input type="text" id="studentId" name="student_id" placeholder="e.g. 1155xxxxxx" />
-          </div>
-          <div class="field">
-            <label for="nationality">Nationality</label>
-            <select id="nationality" name="nationality">
-              <option value="">Select your nationality...</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="college">College</label>
-            <select id="college" name="college">
-              <option value="">Select your college...</option>
-              <option>Chung Chi College</option>
-              <option>New Asia College</option>
-              <option>United College</option>
-              <option>Shaw College</option>
-              <option>Morningside College</option>
-              <option>S.H. Ho College</option>
-              <option>C.W. Chu College</option>
-              <option>Wu Yee Sun College</option>
-              <option>Lee Woo Sing College</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="yearOfStudy">Year of Study</label>
-            <select id="yearOfStudy" name="year">
-              <option value="">Select...</option>
-              <option>Year 1</option>
-              <option>Year 2</option>
-              <option>Year 3</option>
-              <option>Year 4</option>
-              <option>Year 5</option>
-              <option>Postgraduate</option>
-            </select>
-          </div>
-        </div>
-        <div class="field">
-          <label for="major">Major</label>
-          <input type="text" id="major" name="major" placeholder="Full major name, e.g. Business Administration (no abbreviations)" />
-        </div>
-        <div class="field">
-          <label for="message">Why do you want to join? <span class="optional">(optional)</span></label>
-          <textarea id="message" name="message" rows="3" placeholder="Tell us a little about yourself!"></textarea>
-        </div>
-        <input type="hidden" name="_subject" value="New ISA CUHK membership registration" />
-        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
-        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Submit Registration</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- PAYMENT (coming soon) -->
-  <section class="section section-alt" id="payment">
-    <div class="container">
-      <p class="eyebrow">Step 2</p>
-      <h2 class="section-title">Membership Fee</h2>
-      <p class="section-lead">Membership includes a small fee that helps us run our events throughout the year.</p>
-
-      <div class="pay-card">
-        <div class="pay-info">
-          <span class="pay-badge">Coming soon</span>
-          <h3>Online payment is on the way</h3>
-          <p>We're setting up a secure way to pay your membership fee online. For now, just submit the registration form above — we'll follow up with payment details by email.</p>
-          <p class="pay-contact">Questions? Email us at <a href="mailto:isa.cuhk@gmail.com" class="link-accent">isa.cuhk@gmail.com</a></p>
-        </div>
-        <div class="pay-action">
-          <button class="btn btn-primary btn-block" type="button" disabled>Pay membership fee</button>
-          <p class="pay-note">Payment will be enabled here soon.</p>
+        <div class="reg-action">
+          <a href="https://forms.gle/UtVuJ3bKE9HTQguU6" target="_blank" rel="noopener" class="btn btn-primary btn-block">Open the registration form</a>
+          <p class="reg-note">Opens in a new tab. You may be asked to sign in with a Google account.</p>
         </div>
       </div>
     </div>

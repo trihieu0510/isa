@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Team — ISA CUHK</title>
-  <meta name="description" content="Meet the 17th Executive Committee (2026-27) of ISA CUHK — the students behind every event and initiative." />
+  <title>Our Team | ISA CUHK</title>
+  <meta name="description" content="Meet the 17th Executive Committee (2026-27) of ISA CUHK: the students behind every event and initiative." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/isa-logo.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="subpage">
   <div class="scroll-progress" id="scrollProgress"></div>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
   <!-- NAV -->
   <header class="navbar scrolled" id="navbar">
@@ -38,45 +37,59 @@
     <div class="container">
       <p class="eyebrow">The people behind ISA</p>
       <h1 class="page-title">The 17th Cabinet</h1>
-      <p class="page-lead">Meet the Executive Committee for 2026-27 — the students running every event, social and initiative. Tap any photo for a closer look.</p>
+      <p class="page-lead">Meet the Executive Committee for 2026-27: the students running every event, social and initiative. Tap any photo for a closer look.</p>
     </div>
   </header>
 
+  <!-- ===================== SCROLL DECK ===================== -->
+  <div class="deck" id="deck">
+    <div class="deck-track" id="deckTrack">
+      <div class="deck-stage" id="deckStage">
+
   <!-- GROUP FEATURE -->
-  <section class="section team-feature" style="padding-top:2.5rem">
+  <section class="panel team-feature" data-panel>
     <div class="container">
-      <figure class="team-group reveal-me">
+      <figure class="team-group">
         <img src="assets/team/group.jpg" alt="ISA CUHK 17th Cabinet full committee group photo" loading="lazy" />
       </figure>
     </div>
   </section>
 
-  <!-- ROSTER -->
-  <section class="section" style="padding-top:0">
-    <div class="container">
-      <div id="teamRoster"></div>
-    </div>
-  </section>
+  <!-- ROSTER: department panels are injected here -->
+  <div id="teamRoster" class="roster-host"></div>
 
-  <!-- PAST CABINETS -->
-  <section class="section section-alt" id="past-cabinets">
+  <!-- PAST CABINETS: intro, then one panel per cabinet chunk -->
+  <section class="panel panel-alt" data-panel id="past-cabinets">
     <div class="container">
       <p class="eyebrow">Our history</p>
       <h2 class="section-title">Past Cabinets</h2>
-      <p class="section-lead">The committees who built ISA before us. Tap a year to meet them.</p>
-      <div class="pc-tabs filter-bar" id="pcTabs" role="tablist" aria-label="Choose a past cabinet"></div>
-      <div id="pcContent"></div>
+      <p class="section-lead">The committees who built ISA before us. Keep scrolling to meet them, year by year.</p>
+    </div>
+  </section>
+  <div id="pcContent" class="roster-host"></div>
+
+  <!-- JOIN CTA -->
+  <section class="panel" data-panel>
+    <div class="container" style="text-align:center">
+      <p class="eyebrow">Next cabinet</p>
+      <h2 class="section-title" style="margin-bottom:.6rem">Want to be part of it?</h2>
+      <p class="section-lead" style="margin:0 auto 2rem">New committees are formed every year. Join ISA as a member and you could be on the next cabinet.</p>
+      <div class="cta-strip" aria-hidden="true">
+        <figure><img src="assets/events/inauguration/inauguration-02.jpg" alt="" loading="lazy" /></figure>
+        <figure><img src="assets/events/dai-pai-dong/dai-pai-dong-04.jpg" alt="" loading="lazy" /></figure>
+        <figure><img src="assets/images/events/chalk-party-1.jpg" alt="" loading="lazy" /></figure>
+      </div>
+      <div class="hero-actions" style="justify-content:center">
+        <a href="join.html" class="btn btn-primary magnetic">Become a Member &rarr;</a>
+        <a href="events.html" class="btn btn-outline magnetic">See our events</a>
+      </div>
     </div>
   </section>
 
-  <!-- JOIN CTA -->
-  <section class="section">
-    <div class="container" style="text-align:center">
-      <h2 class="section-title" style="margin-bottom:.6rem">Want to be part of it?</h2>
-      <p class="section-lead" style="margin:0 auto 1.8rem">New committees are formed every year. Join ISA as a member and you could be on the next cabinet.</p>
-      <a href="join.html" class="btn btn-primary magnetic">Become a Member &rarr;</a>
+      </div>
     </div>
-  </section>
+    <div class="deck-dots" id="deckDots" aria-hidden="true"></div>
+  </div>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
