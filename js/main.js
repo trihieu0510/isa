@@ -732,4 +732,143 @@
     window.addEventListener('load', () => { measure(); frame(); settleHash(); });
   })();
 
+
+  /* ============================================================
+     Membership card lookup
+     Ported from the cuhk-isa-membership-card project. The roster
+     lives in a published Google Sheet so member data stays out of
+     this repo's git history.
+     ============================================================ */
+  (function membershipCard() {
+    const form = $('#mcForm');
+    if (!form) return;
+
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1yex7loy2f9lOTwhcRypRlO1_S_4v6ZqhgpDI1e1Vkuo/gviz/tq?tqx=out:csv&sheet=Sheet1';
+
+    const sidInput = $('#mcSid');
+    const submit = $('#mcSubmit');
+    const statusEl = $('#mcStatus');
+    const errorEl = $('#mcError');
+    const result = $('#mcResult');
+    const cardEl = $('#mcCard');
+    const numEl = $('#mcNum');
+    const nameEl = $('#mcName');
+    const sinceEl = $('#mcSince');
+    const qrEl = $('#mcQr');
+
+    let members = [];
+
+    const say = (el, msg) => {
+      if (!msg) { el.hidden = true; return; }
+      el.textContent = msg;
+      el.hidden = false;
+    };
+
+    /* --- CSV --- */
+    const parseCsv = (text) => {
+      const rows = [];
+      let row = [], field = '', quoted = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (quoted) {
+          if (ch === '"' && text[i + 1] === '"') { field += '"'; i++; }
+          else if (ch === '"') quoted = false;
+          else field += ch;
+        } else if (ch === '"') quoted = true;
+        else if (ch === ',') { row.push(field); field = ''; }
+        else if (ch === '\n' || ch === '\r') {
+          if (ch === '\r' && text[i + 1] === '\n') i++;
+          row.push(field); rows.push(row); row = []; field = '';
+        } else field += ch;
+      }
+      if (field.length || row.length) { row.push(field); rows.push(row); }
+      return rows.filter((r) => r.some((c) => c.trim() !== ''));
+    };
+
+    const toMembers = (rows) => {
+      if (!rows.length) return [];
+      const head = rows[0].map((h) => h.trim().toLowerCase());
+      const si = head.indexOf('sid'), ni = head.indexOf('name'), ji = head.indexOf('joindate');
+      if (si === -1 || ni === -1 || ji === -1) throw new Error('Sheet is missing sid, name or joinDate');
+      return rows.slice(1).map((r) => ({
+        sid: (r[si] || '').trim(),
+        name: (r[ni] || '').trim(),
+        joinDate: (r[ji] || '').trim(),
+      })).filter((m) => m.sid);
+    };
+
+    const ready = (async () => {
+      say(statusEl, 'Loading the membership list...');
+      submit.disabled = true;
+      try {
+        const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Sheet request failed: ' + res.status);
+        members = toMembers(parseCsv(await res.text()));
+        say(statusEl, null);
+      } catch (err) {
+        // Deliberately no placeholder roster here: showing demo names on the
+        // live site would look like real members.
+        members = [];
+        say(statusEl, null);
+        say(errorEl, 'The membership list is unavailable right now. Please try again later, or email isa.cuhk@gmail.com.');
+      } finally {
+        submit.disabled = false;
+      }
+    })();
+
+    /* --- Card rendering --- */
+    const groupSid = (sid) => sid.replace(/(.{4})/g, '$1 ').trim();
+
+    const prettyDate = (iso) => {
+      const d = new Date(iso + 'T00:00:00');
+      if (isNaN(d)) return iso || '-';
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    };
+
+    const drawQr = (text) => {
+      if (typeof qrcode !== 'function') { qrEl.innerHTML = ''; return; }
+      const qr = qrcode(0, 'M');
+      qr.addData(text);
+      qr.make();
+      qrEl.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 1 });
+    };
+
+    const show = (m) => {
+      numEl.textContent = groupSid(m.sid);
+      nameEl.textContent = m.name;
+      sinceEl.textContent = prettyDate(m.joinDate);
+      drawQr('ISA-MEMBER|' + m.sid + '|' + m.name + '|' + m.joinDate);
+      cardEl.classList.remove('flipped');
+      say(errorEl, null);
+      form.hidden = true;
+      result.hidden = false;
+      result.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    };
+
+    const flip = () => cardEl.classList.toggle('flipped');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      say(errorEl, null);
+      await ready;
+      const sid = sidInput.value.trim();
+      if (!sid) { say(errorEl, 'Please enter your Student ID.'); return; }
+      const found = members.find((m) => m.sid === sid);
+      if (found) show(found);
+      else say(errorEl, 'No member found with that Student ID. Check the number, or email isa.cuhk@gmail.com if you think this is wrong.');
+    });
+
+    cardEl.addEventListener('click', flip);
+    cardEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+    });
+    $('#mcFlip').addEventListener('click', flip);
+    $('#mcAgain').addEventListener('click', () => {
+      result.hidden = true;
+      form.hidden = false;
+      sidInput.value = '';
+      sidInput.focus();
+    });
+  })();
+
 })();

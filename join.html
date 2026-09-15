@@ -77,6 +77,49 @@
     </div>
   </section>
 
+
+  <!-- MEMBERSHIP CARD LOOKUP -->
+  <section class="section section-alt" id="membership-card">
+    <div class="container">
+      <p class="eyebrow">Members</p>
+      <h2 class="section-title">Your membership card</h2>
+      <p class="section-lead">Already signed up? Enter your Student ID to pull up your digital ISA card.</p>
+
+      <div class="mc-wrap">
+        <form class="mc-form" id="mcForm" autocomplete="off" novalidate>
+          <label for="mcSid">Student ID</label>
+          <div class="mc-row">
+            <input type="text" id="mcSid" name="sid" inputmode="numeric" placeholder="e.g. 1155123456" required />
+            <button type="submit" class="btn btn-primary" id="mcSubmit">Find my card</button>
+          </div>
+          <p class="mc-note" id="mcStatus" role="status" aria-live="polite" hidden></p>
+          <p class="mc-note mc-error" id="mcError" role="alert" hidden></p>
+        </form>
+
+        <div class="mc-result" id="mcResult" hidden>
+          <div class="mc-scene">
+            <div class="mc-card" id="mcCard" tabindex="0" role="button" aria-label="Membership card. Press Enter to flip it over.">
+              <div class="mc-face mc-front">
+                <span class="mc-num" id="mcNum">0000 0000</span>
+                <span class="mc-name" id="mcName">FULL NAME</span>
+                <span class="mc-tag">ISA EXCLUSIVE MEMBER</span>
+              </div>
+              <div class="mc-face mc-back">
+                <div class="mc-qr" id="mcQr"></div>
+                <span class="mc-since">Member since <span id="mcSince">-</span></span>
+                <span class="mc-fine">This card is property of the International Student Association.</span>
+              </div>
+            </div>
+          </div>
+          <div class="mc-actions">
+            <button type="button" class="btn btn-outline" id="mcFlip">Flip card</button>
+            <button type="button" class="btn btn-outline" id="mcAgain">Search again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
@@ -98,6 +141,7 @@
     <p class="footer-copy">© <span id="year"></span> ISA CUHK · International Students Association</p>
   </footer>
 
+  <script src="js/qrcode.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

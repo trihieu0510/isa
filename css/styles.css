@@ -514,6 +514,101 @@ textarea { resize: vertical; }
 .link-accent { color: var(--purple); font-weight: 500; border-bottom: 1px solid var(--gold); transition: border-color .2s ease, color .2s ease; }
 .link-accent:hover { color: var(--gold); border-color: var(--purple); }
 
+/* ============================================================
+   Membership card lookup
+   Ported from the cuhk-isa-membership-card project. Namespaced
+   "mc-" because this site already uses .card for feature cards.
+   Text positions are percentages tuned to the 1748x1240 artwork.
+   ============================================================ */
+.mc-wrap { display: grid; gap: 2.5rem; justify-items: center; }
+
+.mc-form { width: 100%; max-width: 520px; }
+.mc-form label {
+  display: block; font-family: var(--font-head); font-weight: 500;
+  font-size: .85rem; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--body); margin-bottom: .6rem;
+}
+.mc-row { display: flex; gap: .7rem; flex-wrap: wrap; }
+.mc-row input {
+  flex: 1 1 220px; font-family: var(--font-body); font-size: 1rem;
+  padding: .85rem 1rem; color: var(--ink);
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  transition: border-color .2s ease;
+}
+.mc-row input:focus { outline: none; border-color: var(--purple); }
+.mc-row .btn { flex: 0 0 auto; }
+.mc-row .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.mc-note { margin-top: .9rem; font-size: .9rem; color: var(--body); }
+.mc-error { color: #9d2235; }
+
+/* --- The card itself --- */
+.mc-result { display: grid; gap: 1.4rem; justify-items: center; width: 100%; }
+.mc-scene { width: 100%; max-width: 430px; aspect-ratio: 1748 / 1240; perspective: 1400px; }
+.mc-card {
+  position: relative; width: 100%; height: 100%; cursor: pointer;
+  transform-style: preserve-3d; transition: transform .75s cubic-bezier(.4,.2,.2,1);
+}
+.mc-card.flipped { transform: rotateY(180deg); }
+.mc-card:focus { outline: none; }
+.mc-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
+
+.mc-face {
+  position: absolute; inset: 0; border-radius: var(--radius); overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  box-shadow: 0 18px 44px rgba(45,14,31,.28);
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+.mc-front { background-image: url("../assets/card/card-front.png"); }
+.mc-back { background-image: url("../assets/card/card-back.png"); transform: rotateY(180deg); }
+
+.mc-num, .mc-name, .mc-tag, .mc-since, .mc-fine { position: absolute; left: 7%; }
+.mc-num {
+  top: 33%; font-family: ui-monospace, "Courier New", monospace; font-weight: 700;
+  font-size: clamp(.95rem, 2.6vw, 1.2rem); letter-spacing: .26em; color: #14202b;
+  text-shadow: 0 1px 3px rgba(255,255,255,.75);
+}
+.mc-name {
+  top: 51%; font-family: var(--font-head); font-weight: 700; text-transform: uppercase;
+  font-size: clamp(.85rem, 2.4vw, 1.05rem); letter-spacing: .06em; color: #14202b;
+  text-shadow: 0 1px 3px rgba(255,255,255,.75); max-width: 70%;
+}
+.mc-tag {
+  top: 65%; font-family: var(--font-head); font-weight: 600;
+  font-size: clamp(.6rem, 1.6vw, .75rem); letter-spacing: .12em; color: #8d2a9c;
+  text-shadow: 0 1px 3px rgba(255,255,255,.75);
+}
+.mc-qr {
+  position: absolute; left: 7%; top: 25%; background: #fff; padding: 6px;
+  border-radius: 4px; line-height: 0; box-shadow: 0 2px 10px rgba(0,0,0,.22);
+}
+.mc-qr svg { display: block; width: clamp(58px, 17%, 84px); height: auto; }
+.mc-since {
+  top: 67%; font-family: var(--font-head); font-weight: 600;
+  font-size: clamp(.75rem, 2vw, .92rem); color: #14202b;
+  text-shadow: 0 1px 3px rgba(255,255,255,.75);
+}
+.mc-fine {
+  top: 82%; width: 56%; font-size: clamp(.52rem, 1.3vw, .62rem); line-height: 1.4;
+  color: #35434f; text-shadow: 0 1px 3px rgba(255,255,255,.6);
+}
+
+.mc-actions { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; }
+
+@media (max-width: 560px) {
+  /* Stack the lookup controls: a side-by-side input and button squeeze
+     both below a comfortable tap size on a phone. */
+  .mc-row input, .mc-row .btn { flex: 1 1 100%; }
+  .mc-actions { width: 100%; }
+  .mc-actions .btn { flex: 1 1 calc(50% - .35rem); }
+  .mc-scene { max-width: 100%; }
+  .mc-wrap { gap: 1.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-card { transition: none; }
+}
+
 /* ---- Filter bar ---- */
 .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2.5rem; }
 .filter-btn {
@@ -858,4 +953,13 @@ body.subpage { padding-top: 72px; }
   .lb-nav { width: 42px; height: 42px; font-size: 1.5rem; }
   .lb-prev { left: 1vw; } .lb-next { right: 1vw; }
   .g-overlay { opacity: 1; background: linear-gradient(to top, rgba(18,7,13,.85), transparent 60%); }
+}
+
+/* Touch targets: 44px is the comfortable minimum on a phone. The burger,
+   footer links and filter chips all sat under it. */
+@media (max-width: 680px) {
+  .nav-toggle { padding: 13px 13px; }
+  .footer-links a, .footer-social a { display: inline-block; padding-block: .5rem; }
+  .filter-btn { padding: .75rem 1.1rem; }
+  .mc-row input { padding-block: .95rem; }
 }
